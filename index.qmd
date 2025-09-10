@@ -1,0 +1,13 @@
+---
+title: "Ethan's Site"
+---
+
+Hello my name is Ethan. I am a Baruch Grad student studying for my masters in statistics.
+
+
+```{r}
+#| include: false
+1 + 1
+```
+--------------
+Last Updated: `r format(Sys.time(), "%A %m %d, %Y at %H:%M%p")`
