@@ -4,6 +4,125 @@
     "href": "index.html",
     "title": "Ethan’s Site",
     "section": "",
-    "text": "Hello my name is Ethan. I am a Baruch Grad student studying for my masters in statistics.\n\nLast Updated: Wednesday 09 10, 2025 at 03:11AM"
+    "text": "Hello my name is Ethan. I am a Baruch Grad student studying for my masters in statistics.\n\n\n\n\n\n\n\nLast Updated: Tuesday 09 23, 2025 at 20:58PM"
+  },
+  {
+    "objectID": "Mini-Project #01.html",
+    "href": "Mini-Project #01.html",
+    "title": "Mini-Project #01",
+    "section": "",
+    "text": "if (!dir.exists(file.path(\"data\", \"mp01\"))) {\n    dir.create(file.path(\"data\", \"mp01\"), showWarnings = FALSE, recursive = TRUE)\n}\n\nGLOBAL_TOP_10_FILENAME &lt;- file.path(\"data\", \"mp01\", \"global_top10_alltime.csv\")\n\nif (!file.exists(GLOBAL_TOP_10_FILENAME)) {\n    download.file(\"https://www.netflix.com/tudum/top10/data/all-weeks-global.tsv\", \n                  destfile = GLOBAL_TOP_10_FILENAME)\n}\n\nCOUNTRY_TOP_10_FILENAME &lt;- file.path(\"data\", \"mp01\", \"country_top10_alltime.csv\")\n\nif (!file.exists(COUNTRY_TOP_10_FILENAME)) {\n    download.file(\"https://www.netflix.com/tudum/top10/data/all-weeks-countries.tsv\", \n                  destfile = COUNTRY_TOP_10_FILENAME)\n}\nif (!require(\"tidyverse\")) install.packages(\"tidyverse\")\nlibrary(readr)\nlibrary(dplyr)\n\nGLOBAL_TOP_10 &lt;- read_tsv(GLOBAL_TOP_10_FILENAME)\n\nstr(GLOBAL_TOP_10)\n\nspc_tbl_ [8,880 × 9] (S3: spec_tbl_df/tbl_df/tbl/data.frame)\n $ week                      : Date[1:8880], format: \"2025-09-28\" \"2025-09-28\" ...\n $ category                  : chr [1:8880] \"Films (English)\" \"Films (English)\" \"Films (English)\" \"Films (English)\" ...\n $ weekly_rank               : num [1:8880] 1 2 3 4 5 6 7 8 9 10 ...\n $ show_title                : chr [1:8880] \"KPop Demon Hunters\" \"Ruth & Boaz\" \"The Wrong Paris\" \"Man on Fire\" ...\n $ season_title              : chr [1:8880] \"N/A\" \"N/A\" \"N/A\" \"N/A\" ...\n $ weekly_hours_viewed       : num [1:8880] 32200000 15900000 13500000 15700000 11200000 8400000 6800000 6200000 4900000 8400000 ...\n $ runtime                   : num [1:8880] 1.67 1.55 1.78 2.43 1.83 ...\n $ weekly_views              : num [1:8880] 19300000 10300000 7600000 6500000 6100000 4900000 3600000 3200000 3200000 2800000 ...\n $ cumulative_weeks_in_top_10: num [1:8880] 15 1 3 5 2 1 1 1 1 3 ...\n - attr(*, \"spec\")=\n  .. cols(\n  ..   week = col_date(format = \"\"),\n  ..   category = col_character(),\n  ..   weekly_rank = col_double(),\n  ..   show_title = col_character(),\n  ..   season_title = col_character(),\n  ..   weekly_hours_viewed = col_double(),\n  ..   runtime = col_double(),\n  ..   weekly_views = col_double(),\n  ..   cumulative_weeks_in_top_10 = col_double()\n  .. )\n - attr(*, \"problems\")=&lt;externalptr&gt; \n\nglimpse(GLOBAL_TOP_10)\n\nRows: 8,880\nColumns: 9\n$ week                       &lt;date&gt; 2025-09-28, 2025-09-28, 2025-09-28, 2025-0…\n$ category                   &lt;chr&gt; \"Films (English)\", \"Films (English)\", \"Film…\n$ weekly_rank                &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, …\n$ show_title                 &lt;chr&gt; \"KPop Demon Hunters\", \"Ruth & Boaz\", \"The W…\n$ season_title               &lt;chr&gt; \"N/A\", \"N/A\", \"N/A\", \"N/A\", \"N/A\", \"N/A\", \"…\n$ weekly_hours_viewed        &lt;dbl&gt; 32200000, 15900000, 13500000, 15700000, 112…\n$ runtime                    &lt;dbl&gt; 1.6667, 1.5500, 1.7833, 2.4333, 1.8333, 1.7…\n$ weekly_views               &lt;dbl&gt; 19300000, 10300000, 7600000, 6500000, 61000…\n$ cumulative_weeks_in_top_10 &lt;dbl&gt; 15, 1, 3, 5, 2, 1, 1, 1, 1, 3, 2, 1, 1, 2, …\n\nGLOBAL_TOP_10 &lt;- GLOBAL_TOP_10 |&gt;\n    mutate(season_title = if_else(season_title == \"N/A\", NA, season_title))\n\nglimpse(GLOBAL_TOP_10)\n\nRows: 8,880\nColumns: 9\n$ week                       &lt;date&gt; 2025-09-28, 2025-09-28, 2025-09-28, 2025-0…\n$ category                   &lt;chr&gt; \"Films (English)\", \"Films (English)\", \"Film…\n$ weekly_rank                &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, …\n$ show_title                 &lt;chr&gt; \"KPop Demon Hunters\", \"Ruth & Boaz\", \"The W…\n$ season_title               &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, \"aka Ch…\n$ weekly_hours_viewed        &lt;dbl&gt; 32200000, 15900000, 13500000, 15700000, 112…\n$ runtime                    &lt;dbl&gt; 1.6667, 1.5500, 1.7833, 2.4333, 1.8333, 1.7…\n$ weekly_views               &lt;dbl&gt; 19300000, 10300000, 7600000, 6500000, 61000…\n$ cumulative_weeks_in_top_10 &lt;dbl&gt; 15, 1, 3, 5, 2, 1, 1, 1, 1, 3, 2, 1, 1, 2, …\nlibrary(DT)\nGLOBAL_TOP_10 |&gt; \n    head(n = 20) |&gt;\n    datatable(options = list(searching = FALSE, info = FALSE))\n\n\n\n\nlibrary(stringr)\nformat_titles &lt;- function(df){\n    colnames(df) &lt;- str_replace_all(colnames(df), \"_\", \" \") |&gt; str_to_title()\n    df\n}\n\nGLOBAL_TOP_10 |&gt; \n    format_titles() |&gt;\n    head(n = 20) |&gt;\n    datatable(options = list(searching = FALSE, info = FALSE)) |&gt;\n    formatRound(c('Weekly Hours Viewed', 'Weekly Views'))\n\n\n\n\nGLOBAL_TOP_10 |&gt; \n    mutate(`runtime_(minutes)` = round(60 * runtime)) |&gt;\n    select(-season_title, \n           -runtime) |&gt;\n    format_titles() |&gt;\n    head(n = 20) |&gt;\n    datatable(options = list(searching = FALSE, info = FALSE)) |&gt;\n    formatRound(c('Weekly Hours Viewed', 'Weekly Views'))\nif (!require(\"tidyverse\")) install.packages(\"tidyverse\")\nlibrary(readr)\nlibrary(dplyr)\n\nCOUNTRY_TOP_10 &lt;- read_tsv(COUNTRY_TOP_10_FILENAME)\n\nstr(COUNTRY_TOP_10)\n\nspc_tbl_ [413,620 × 8] (S3: spec_tbl_df/tbl_df/tbl/data.frame)\n $ country_name              : chr [1:413620] \"Argentina\" \"Argentina\" \"Argentina\" \"Argentina\" ...\n $ country_iso2              : chr [1:413620] \"AR\" \"AR\" \"AR\" \"AR\" ...\n $ week                      : Date[1:413620], format: \"2025-09-28\" \"2025-09-28\" ...\n $ category                  : chr [1:413620] \"Films\" \"Films\" \"Films\" \"Films\" ...\n $ weekly_rank               : num [1:413620] 1 2 3 4 5 6 7 8 9 10 ...\n $ show_title                : chr [1:413620] \"Sonic the Hedgehog 3\" \"KPop Demon Hunters\" \"French Lover\" \"She Said Maybe\" ...\n $ season_title              : chr [1:413620] \"N/A\" \"N/A\" \"N/A\" \"N/A\" ...\n $ cumulative_weeks_in_top_10: num [1:413620] 2 15 1 2 1 1 2 5 1 2 ...\n - attr(*, \"spec\")=\n  .. cols(\n  ..   country_name = col_character(),\n  ..   country_iso2 = col_character(),\n  ..   week = col_date(format = \"\"),\n  ..   category = col_character(),\n  ..   weekly_rank = col_double(),\n  ..   show_title = col_character(),\n  ..   season_title = col_character(),\n  ..   cumulative_weeks_in_top_10 = col_double()\n  .. )\n - attr(*, \"problems\")=&lt;externalptr&gt; \n\nglimpse(COUNTRY_TOP_10)\n\nRows: 413,620\nColumns: 8\n$ country_name               &lt;chr&gt; \"Argentina\", \"Argentina\", \"Argentina\", \"Arg…\n$ country_iso2               &lt;chr&gt; \"AR\", \"AR\", \"AR\", \"AR\", \"AR\", \"AR\", \"AR\", \"…\n$ week                       &lt;date&gt; 2025-09-28, 2025-09-28, 2025-09-28, 2025-0…\n$ category                   &lt;chr&gt; \"Films\", \"Films\", \"Films\", \"Films\", \"Films\"…\n$ weekly_rank                &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, …\n$ show_title                 &lt;chr&gt; \"Sonic the Hedgehog 3\", \"KPop Demon Hunters…\n$ season_title               &lt;chr&gt; \"N/A\", \"N/A\", \"N/A\", \"N/A\", \"N/A\", \"N/A\", \"…\n$ cumulative_weeks_in_top_10 &lt;dbl&gt; 2, 15, 1, 2, 1, 1, 2, 5, 1, 2, 2, 1, 1, 1, …\n\nCOUNTRY_TOP_10 &lt;- COUNTRY_TOP_10 |&gt;\n    mutate(season_title = if_else(season_title == \"N/A\", NA, season_title))\n\nglimpse(COUNTRY_TOP_10)\n\nRows: 413,620\nColumns: 8\n$ country_name               &lt;chr&gt; \"Argentina\", \"Argentina\", \"Argentina\", \"Arg…\n$ country_iso2               &lt;chr&gt; \"AR\", \"AR\", \"AR\", \"AR\", \"AR\", \"AR\", \"AR\", \"…\n$ week                       &lt;date&gt; 2025-09-28, 2025-09-28, 2025-09-28, 2025-0…\n$ category                   &lt;chr&gt; \"Films\", \"Films\", \"Films\", \"Films\", \"Films\"…\n$ weekly_rank                &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, …\n$ show_title                 &lt;chr&gt; \"Sonic the Hedgehog 3\", \"KPop Demon Hunters…\n$ season_title               &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, \"Bi…\n$ cumulative_weeks_in_top_10 &lt;dbl&gt; 2, 15, 1, 2, 1, 1, 2, 5, 1, 2, 2, 1, 1, 1, …\nlibrary(DT)\nCOUNTRY_TOP_10 |&gt; \n    head(n = 20) |&gt;\n    datatable(options = list(searching = FALSE, info = FALSE))\n\n\n\n\nlibrary(stringr)\nformat_titles &lt;- function(df){\n    colnames(df) &lt;- str_replace_all(colnames(df), \"_\", \" \") |&gt; str_to_title()\n    df\n}\nlibrary(dplyr)\n\ndf &lt;- COUNTRY_TOP_10\n\n\nnum_countries &lt;- n_distinct(df$country_name)"
+  },
+  {
+    "objectID": "Mini-Project #01.html#how-many-different-countries-does-netflix-operate-inyou-can-use-the-viewing-history-as-a-proxy.",
+    "href": "Mini-Project #01.html#how-many-different-countries-does-netflix-operate-inyou-can-use-the-viewing-history-as-a-proxy.",
+    "title": "Mini-Project #01",
+    "section": "How many different countries does Netflix operate in?(You can use the viewing history as a proxy.)",
+    "text": "How many different countries does Netflix operate in?(You can use the viewing history as a proxy.)\nThere are 94 that Netflix operates in."
+  },
+  {
+    "objectID": "Mini-Project #01.html#which-non-english-language-film-has-spent-the-most-cumulative-weeks-in-the-global-top-10-how-many-weeks-did-it-spend",
+    "href": "Mini-Project #01.html#which-non-english-language-film-has-spent-the-most-cumulative-weeks-in-the-global-top-10-how-many-weeks-did-it-spend",
+    "title": "Mini-Project #01",
+    "section": "Which non-English-language film has spent the most cumulative weeks in the global top 10? How many weeks did it spend?",
+    "text": "Which non-English-language film has spent the most cumulative weeks in the global top 10? How many weeks did it spend?"
+  },
+  {
+    "objectID": "Mini-Project #01.html#what-is-the-longest-film-english-or-non-english-to-have-ever-appeared-in-the-netflix-global-top-10-how-long-is-it-in-minutes",
+    "href": "Mini-Project #01.html#what-is-the-longest-film-english-or-non-english-to-have-ever-appeared-in-the-netflix-global-top-10-how-long-is-it-in-minutes",
+    "title": "Mini-Project #01",
+    "section": "What is the longest film (English or non-English) to have ever appeared in the Netflix global Top 10? How long is it in minutes?",
+    "text": "What is the longest film (English or non-English) to have ever appeared in the Netflix global Top 10? How long is it in minutes?\n\nNote that Netflix does not provide runtime for programs before a certain date, so your answer here may be a bit limited."
+  },
+  {
+    "objectID": "Mini-Project #01.html#for-each-of-the-four-categories-what-program-has-the-most-total-hours-of-global-viewership",
+    "href": "Mini-Project #01.html#for-each-of-the-four-categories-what-program-has-the-most-total-hours-of-global-viewership",
+    "title": "Mini-Project #01",
+    "section": "For each of the four categories, what program has the most total hours of global viewership?",
+    "text": "For each of the four categories, what program has the most total hours of global viewership?"
+  },
+  {
+    "objectID": "Mini-Project #01.html#which-tv-show-had-the-longest-run-in-a-countrys-top-10-how-long-was-this-run-and-in-what-country-did-it-occur",
+    "href": "Mini-Project #01.html#which-tv-show-had-the-longest-run-in-a-countrys-top-10-how-long-was-this-run-and-in-what-country-did-it-occur",
+    "title": "Mini-Project #01",
+    "section": "Which TV show had the longest run in a country’s Top 10? How long was this run and in what country did it occur?",
+    "text": "Which TV show had the longest run in a country’s Top 10? How long was this run and in what country did it occur?"
+  },
+  {
+    "objectID": "Mini-Project #01.html#netflix-provides-over-200-weeks-of-service-history-for-all-but-one-country-in-our-data-set.-which-country-is-this-and-when-did-netflix-cease-operations-in-that-country",
+    "href": "Mini-Project #01.html#netflix-provides-over-200-weeks-of-service-history-for-all-but-one-country-in-our-data-set.-which-country-is-this-and-when-did-netflix-cease-operations-in-that-country",
+    "title": "Mini-Project #01",
+    "section": "Netflix provides over 200 weeks of service history for all but one country in our data set. Which country is this and when did Netflix cease operations in that country?",
+    "text": "Netflix provides over 200 weeks of service history for all but one country in our data set. Which country is this and when did Netflix cease operations in that country?"
+  },
+  {
+    "objectID": "Mini-Project #01.html#what-is-the-total-viewership-of-the-tv-show-squid-game-note-that-there-are-three-seasons-total-and-we-are-looking-for-the-total-number-of-hours-watched-across-all-seasons.",
+    "href": "Mini-Project #01.html#what-is-the-total-viewership-of-the-tv-show-squid-game-note-that-there-are-three-seasons-total-and-we-are-looking-for-the-total-number-of-hours-watched-across-all-seasons.",
+    "title": "Mini-Project #01",
+    "section": "What is the total viewership of the TV show Squid Game? Note that there are three seasons total and we are looking for the total number of hours watched across all seasons.",
+    "text": "What is the total viewership of the TV show Squid Game? Note that there are three seasons total and we are looking for the total number of hours watched across all seasons."
+  },
+  {
+    "objectID": "Mini-Project #01.html#the-movie-red-notice-has-a-runtime-of-1-hour-and-58-minutes.-approximately-how-many-views-did-it-receive-in-2021-note-that-netflix-does-not-provide-the-weekly_views-values-that-far-back-in-the-past-but-you-can-compute-it-yourself-using-the-total-view-time-and-the-runtime.",
+    "href": "Mini-Project #01.html#the-movie-red-notice-has-a-runtime-of-1-hour-and-58-minutes.-approximately-how-many-views-did-it-receive-in-2021-note-that-netflix-does-not-provide-the-weekly_views-values-that-far-back-in-the-past-but-you-can-compute-it-yourself-using-the-total-view-time-and-the-runtime.",
+    "title": "Mini-Project #01",
+    "section": "The movie Red Notice has a runtime of 1 hour and 58 minutes. Approximately how many views did it receive in 2021? Note that Netflix does not provide the weekly_views values that far back in the past, but you can compute it yourself using the total view time and the runtime.",
+    "text": "The movie Red Notice has a runtime of 1 hour and 58 minutes. Approximately how many views did it receive in 2021? Note that Netflix does not provide the weekly_views values that far back in the past, but you can compute it yourself using the total view time and the runtime.\n\nHint: The year() function from the lubridate package may be helpful."
+  },
+  {
+    "objectID": "Mini-Project #01.html#how-many-films-reached-number-1-in-the-us-but-did-not-originally-debut-there-that-is-find-films-that-first-appeared-on-the-top-10-chart-at-e.g.-number-4-but-then-became-more-popular-and-eventually-hit-number-1-what-is-the-most-recent-film-to-pull-this-off",
+    "href": "Mini-Project #01.html#how-many-films-reached-number-1-in-the-us-but-did-not-originally-debut-there-that-is-find-films-that-first-appeared-on-the-top-10-chart-at-e.g.-number-4-but-then-became-more-popular-and-eventually-hit-number-1-what-is-the-most-recent-film-to-pull-this-off",
+    "title": "Mini-Project #01",
+    "section": "How many Films reached Number 1 in the US but did not originally debut there? That is, find films that first appeared on the Top 10 chart at, e.g., Number 4 but then became more popular and eventually hit Number 1? What is the most recent film to pull this off?",
+    "text": "How many Films reached Number 1 in the US but did not originally debut there? That is, find films that first appeared on the Top 10 chart at, e.g., Number 4 but then became more popular and eventually hit Number 1? What is the most recent film to pull this off?\n\nHint: You will want to create a new variable to identify films that topped the charts at any point during their run."
+  },
+  {
+    "objectID": "Mini-Project #01.html#which-tv-showseason-hit-the-top-10-in-the-most-countries-in-its-debut-week-in-how-many-countries-did-it-chart",
+    "href": "Mini-Project #01.html#which-tv-showseason-hit-the-top-10-in-the-most-countries-in-its-debut-week-in-how-many-countries-did-it-chart",
+    "title": "Mini-Project #01",
+    "section": "Which TV show/season hit the top 10 in the most countries in its debut week? In how many countries did it chart?",
+    "text": "Which TV show/season hit the top 10 in the most countries in its debut week? In how many countries did it chart?"
+  },
+  {
+    "objectID": "Mini-Project #01.html#how-many-different-countries-does-netflix-operate-in",
+    "href": "Mini-Project #01.html#how-many-different-countries-does-netflix-operate-in",
+    "title": "Mini-Project #01",
+    "section": "How many different countries does Netflix operate in?",
+    "text": "How many different countries does Netflix operate in?\nThere are 94 that Netflix operates in."
+  },
+  {
+    "objectID": "Mini-Project-01.html",
+    "href": "Mini-Project-01.html",
+    "title": "Mini-Project #01",
+    "section": "",
+    "text": "How many different countries does Netflix operate in?\nThere are 94 that Netflix operates in.\n\n\nWhich non-English-language film has spent the most cumulative weeks in the global top 10? How many weeks did it spend?\nAll Quiet on the Western Front spent the most cumulative weeks in the global top 10 with 23 weeks.\n\n\nWhat is the longest film (English or non-English) to have ever appeared in the Netflix global Top 10? How long is it in minutes?\nPushpa 2: The Rule (Reloaded Version) is the film with the longest run time with 224 minutes.\n\n\nFor each of the four categories, what program has the most total hours of global viewership?\nThe titles with the most total hours of global viewership were, Troll(top English film), Don’t Look Up(top Non-English film), Squid Game(Non-English TV Show), Wednesday(English TV Show).\n\n\nWhich TV show had the longest run in a country’s Top 10? How long was this run and in what country did it occur?\nMoney Heist was the show with the longest run from Pakistan with 127 weeks in the Top 10.\n\n\nNetflix provides over 200 weeks of service history for all but one country in our data set. Which country is this and when did Netflix cease operations in that country?\nRussia is the one country with a service history of less than 200. They ceased operation in 2022-02-27.\n\n\nWhat is the total viewership of the TV show Squid Game? Note that there are three seasons total and we are looking for the total number of hours watched across all seasons.\nThe total viewership of the show Squid Game was 5,048,300,000 hours throughout the three season run.\n\n\nThe movie Red Notice has a runtime of 1 hour and 58 minutes. Approximately how many views did it receive in 2021? Note that Netflix does not provide the weekly_views values that far back in the past, but you can compute it yourself using the total view time and the runtime.\nThe approximate view count for Red Notice in 2021 was 3,362,203.\n\n\nHow many Films reached Number 1 in the US but did not originally debut there? That is, find films that first appeared on the Top 10 chart at, e.g., Number 4 but then became more popular and eventually hit Number 1? What is the most recent film to pull this off?\nThere were 75 films that did not originally debut at 1. The most recent film to pull this off was KPop Demon Hunters.\n\n\nWhich TV show/season hit the top 10 in the most countries in its debut week? In how many countries did it chart?\nThe show that hit the top 10 in the most countries in its debut week was Emily in Paris: Season 2 in 94 countries."
+  },
+  {
+    "objectID": "Mini-Project-01.html#how-many-different-countries-does-netflix-operate-in",
+    "href": "Mini-Project-01.html#how-many-different-countries-does-netflix-operate-in",
+    "title": "Mini-Project #01",
+    "section": "How many different countries does Netflix operate in?",
+    "text": "How many different countries does Netflix operate in?\nThere are 94 that Netflix operates in."
+  },
+  {
+    "objectID": "Mini-Project-01.html#stranger-things-season-5-absolute-cinema",
+    "href": "Mini-Project-01.html#stranger-things-season-5-absolute-cinema",
+    "title": "Mini-Project #01",
+    "section": "Stranger Things Season 5: Absolute Cinema!",
+    "text": "Stranger Things Season 5: Absolute Cinema!\nSitting in Netflix’s top 10 for 366 weeks, Stranger Things Season 4 left viewers on their feet! As Season 4 sat in the top spot of the weekly ranking for 31 weeks we meet Eleven and the gang to take on everything that has lead them here. Accumulating 2,967,980,000 hours watched over the span of the show’s lifetime, the epic conclusion for the generational show that put Netflix show production on the map is bound to be the talk of the town. Do not miss out on being one of millions watching as Stranger Things wraps things up for good."
+  },
+  {
+    "objectID": "Mini-Project-01.html#netflix-growth-in-india",
+    "href": "Mini-Project-01.html#netflix-growth-in-india",
+    "title": "Mini-Project #01",
+    "section": "Netflix Growth in India",
+    "text": "Netflix Growth in India\nAs the most populated country in the world, there is great opportunity for Netflix to grow greatly from growing business in India. As more media reaches India, there are more opportunities to benefit from the great spread of differing cultural arts and the consumption of local content. Many foreign shows and films are reaching into India’s top 10, ranging from WWE Smackdown to Squid Games. Though there is plenty of foreign media, there is also plenty of domestic media that remains in the top 10 such as, The Great Indian Kapil Show. There is much growth to be had as the expansion of foreign media looms greatly bringing the global top 10 into India’s perview."
+  },
+  {
+    "objectID": "Mini-Project-01.html#netflix-built-on-the-binge",
+    "href": "Mini-Project-01.html#netflix-built-on-the-binge",
+    "title": "Mini-Project #01",
+    "section": "Netflix: Built on the Binge",
+    "text": "Netflix: Built on the Binge\nThe binge factor for streaming is one that cannot be ignored. As we explore the data, we find that there is a larger grasp that television has as it pertains to the streaming time. This makes sense when viewing from a pure content quantity but it definitely follows when we look at the duration that content sits in the top 10. If we look at what content has cumulatively been in the top 10 for more than 20 weeks, we find that it the category the content belongs to tends to be TV. Of the 59 piece of content that share this criteria, only 8 are film and 51 are TV shows. Netflix and streaming in general is overwhelmingly contingent on the ability to binge the content being presented and TV shows tend to be the primary guide to that as weekly stream hours are boosted by the needed to complete a show’s season over and over again."
   }
 ]
